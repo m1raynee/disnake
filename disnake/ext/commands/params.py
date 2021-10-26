@@ -146,6 +146,9 @@ class ParamInfo:
 
         self.le = _xt_to_xe(le, lt, -1)
         self.ge = _xt_to_xe(ge, gt, 1)
+        
+        if self.converter is not None and self.converter.__class__ != type:
+            self.converter = self.converter.__call__
 
     @property
     def required(self) -> bool:
@@ -241,8 +244,6 @@ class ParamInfo:
             # try to parse the converter's annotation, fall back on the annotation itself
             parameters = list(inspect.signature(self.converter).parameters.values())
             parameter = parameters[2] if inspect.ismethod(self.converter) else parameters[1]
-            if self.converter.__class__ != type:
-                self.converter = self.converter.__call__
             conv_annot = get_type_hints(self.converter).get(parameter.name, Any)
 
             if conv_annot in self.TYPES:
