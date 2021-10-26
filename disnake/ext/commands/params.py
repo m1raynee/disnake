@@ -250,7 +250,7 @@ class ParamInfo:
                 self._parse_enum(conv_annot)
                 return
             elif conv_annot is not Any:
-                raise TypeError("Converters cannot use converter annotations")
+                raise TypeError(f"Converters cannot use converter annotations {conv_annot!r}")
             elif annotation in CONVERTER_MAPPING:
                 raise TypeError(
                     "Cannot use an implicit converter annotation and an unnanotated converter at the same time"
